@@ -59,32 +59,31 @@ public class Main {
         mainData.setVisible(false);
         typeSelect.setLocation(10, 10);
         sectionSelect.setLocation(10, 70);
-        typeSelect.addItemListener(e -> onTypeSelect(e));
-        sectionSelect.addItemListener(e -> onSectionSelect(e));
+        typeSelect.addItemListener(e -> onTypeSelect());
+        sectionSelect.addItemListener(e -> onSectionSelect());
         frame.add(typeSelect);
         frame.add(sectionSelect);
         frame.setVisible(true);
     }
 
-    public static void onTypeSelect(ItemEvent e) {
+    public static void onTypeSelect() {
         if (typeSelect.isVisible()) {
+            System.out.println("ts");
             sectionSelect.setVisible(false);
             mainData.setVisible(false);
             String down = DownloadManager.downloadFromURL(MAIN_SHEET_DOCS_KEY, typeSelect.getSelected());
-            System.out.println(down);
             mainSheet = new Sheet(down);
-
-            mainSheet.print();
-            System.out.println(mainSheet.getCell(1, 2));
             sectionSelect.removeAllItems();
             sectionSelect.addItems(mainSheet.getCol(SECTION_NAME_COL, 1));
+            sectionSelect.setSelectedIndex(-1);
             sectionSelect.setVisible(true);
         }
     }
 
-    public static void onSectionSelect(ItemEvent e) {
+    public static void onSectionSelect() {
 
         if (sectionSelect.isVisible()) {
+            System.out.println("ss");
             mainData.setVisible(false);
             int chosenCol = sectionSelect.getSelectedIndex() + 1;
             String down;
@@ -95,10 +94,7 @@ public class Main {
             down = DownloadManager.downloadFromURL(docsKey, sectionSelect.getSelected(),
                     mainSheet.getCell(chosenCol, STUDENT_INFO_COL));
             studentData = new Sheet(down);
-
-            studentData.print();
-            fields.print();
-            String id = JOptionPane.showInputDialog("ID: ");
+            String id = JOptionPane.showInputDialog("ID: ").trim();
             String[] feildData = fields.getRow(0);
             String[] currentData = studentData.getRowWith(id);
             for (int i = 0; i < currentData.length; i++) {

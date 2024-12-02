@@ -61,7 +61,7 @@ public class Sheet {
     public String[] getRowWith(String searchValue) {
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[i].length; j++) {
-                if ("2412826042".trim().equals(searchValue.trim()))
+                if (data[i][j].trim().equals(searchValue))
                     return getRow(i);
             }
         }
@@ -87,15 +87,8 @@ public class Sheet {
         String[] temp = csv.split("\n");
         data = new String[temp.length][];
         for (int i = 0; i < temp.length; i++) {
+            temp[i] = temp[i].substring(1, temp[i].length() - 1);
             data[i] = temp[i].split("\",\"");
-            if (Commons.hasContent(data[i][0]))
-                data[i][0].substring(1);
-            int last = data[i].length - 1;
-            if (Commons.hasContent(data[i][last]))
-                data[i][last].substring(0, data[i][last].length() - 1);
-            // studentData[i][last] = studentData[i][last].substring(0,
-            // studentData[i][last].length() - 1);
-
         }
     }
 
@@ -104,9 +97,7 @@ public class Sheet {
     }
 
     public void print() {
-        System.out.println("wat");
         System.out.println(this.toString());
-        System.out.println("wat");
     }
 
 }
