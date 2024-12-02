@@ -18,7 +18,6 @@ public class DownloadManager {
     }
 
     public static String downloadFromURL(String requestURL) {
-        System.out.println(requestURL);
         try {
             Scanner scanner = new Scanner(new URL(requestURL).openStream(), StandardCharsets.UTF_8.toString());
             scanner.useDelimiter("\\A");

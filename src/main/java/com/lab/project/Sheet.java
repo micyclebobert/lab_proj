@@ -34,9 +34,8 @@ public class Sheet {
                     return getRow(i);
             }
         }
-        getRowWith(Custom.getIDFromUser(searchValue
+        return getRowWith(Custom.getIDFromUser(searchValue
                 + " was not found. Please try again or if you believe it to be a mistake, contact Sir or Apu."));
-        return null;
     }
 
     public Sheet(String csv) {
