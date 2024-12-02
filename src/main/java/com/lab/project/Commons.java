@@ -1,23 +1,9 @@
 package com.lab.project;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class Commons {
 
-    public static boolean isValidCellRange(String range) {
-        String[] s = range.split(":");
-        if (s.length != 2 || s[0].equals(s[1]) || !isValidCellNumber(s[0]) || !isValidCellNumber(s[1]))
-            return false;
-        return true;
-    }
-
-    public static boolean isValidCellNumber(String cellNumber) {
-        return cellNumber.matches("^([A-Z]{1,2}|[A-W][A-Z]{2}|X[A-E][A-Z]|XF[A-D])([1-9]\\d{0,6})$");
-    }
 
     public static String[] getExtraInfoArray(String extraInfoString) {
         String[] extraInfoArray = extraInfoString.split(",");
@@ -100,5 +86,10 @@ public class Commons {
                 s += joiner2D;
         }
         return s;
+    }
+
+    public static void exitWithError(String title, String message) {
+        JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_OPTION);
+        System.exit(0);
     }
 }

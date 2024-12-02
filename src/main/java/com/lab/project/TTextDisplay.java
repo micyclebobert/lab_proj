@@ -1,17 +1,20 @@
-package com.lab.project.TemplateComponent;
+package com.lab.project;
+
+import java.awt.Font;
 
 import javax.swing.JTextArea;
 
-public class TextDisplay extends JTextArea {
+public class TTextDisplay extends JTextArea {
     /* Presetting JTextArea to display multiline text in a nice way */
-    public TextDisplay() {
+    public TTextDisplay() {
         this.setLineWrap(true);
         this.setWrapStyleWord(true);
         this.setOpaque(false);
         this.setEditable(false);
+        this.setFont(new Font(Font.SERIF,Font.BOLD,14));
     }
 
-    public TextDisplay(String textToDisplay) {
+    public TTextDisplay(String textToDisplay) {
         this();
         this.setText(textToDisplay);
     }

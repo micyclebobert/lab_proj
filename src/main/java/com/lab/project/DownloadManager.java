@@ -6,8 +6,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import com.lab.project.TemplateComponent.Exit;
-
 public class DownloadManager {
 
     public static String getFullURL(String docsKeys, String sheetName) {
@@ -16,7 +14,6 @@ public class DownloadManager {
     }
 
     public static String getFullURL(String docsKeys, String sheetName, String range) {
-        System.out.println("4");
         return getFullURL(docsKeys, sheetName) + "&range=" + range;
     }
 
@@ -25,17 +22,21 @@ public class DownloadManager {
         try {
             Scanner scanner = new Scanner(new URL(requestURL).openStream(), StandardCharsets.UTF_8.toString());
             scanner.useDelimiter("\\A");
-            String out = scanner.hasNext() ? scanner.next() : "";
+            String out = "";
+            if (scanner.hasNext())
+                out = scanner.next();
+            else
+                Commons.exitWithError("Download Failure (1)", "Data is empty");
             scanner.close();
             return out;
         } catch (IOException e) {
-            Exit.errorMessage("Download Failure", "Could not download data");
+            e.printStackTrace();
+            Commons.exitWithError("Download Failure (2)", "Could not download data");
             return null;
         }
     }
 
     public static String downloadFromURL(String docsKeys, String sheetName) {
-        System.out.println(getFullURL(docsKeys, sheetName));
         return downloadFromURL(getFullURL(docsKeys, sheetName));
     }
 
@@ -47,7 +48,8 @@ public class DownloadManager {
         try {
             return fullLink.split("spreadsheets/d/")[1].split("/")[0];
         } catch (Exception e) {
-            Exit.errorMessage("Couldn't split", "fullLink");
+            e.printStackTrace();
+            Commons.exitWithError("Couldn't split", "fullLink");
             return null;
         }
     }

@@ -2,8 +2,6 @@ package com.lab.project;
 
 import java.util.Arrays;
 
-import com.lab.project.TemplateComponent.Exit;
-
 public class Sheet {
     String[][] data;
 
@@ -32,29 +30,29 @@ public class Sheet {
     }
 
     public String[] getCol(int col) {
+        return getCol(col, 0);
+    }
+
+    public String[] getCol(int col, int startRow) {
+        return getCol(col, startRow, getRowCount() - 1);
+    }
+
+    public String[] getCol(int col, int startRow, int endRow) {
         String[] out = new String[getRowCount()];
-        for (int i = 0; i < out.length; i++) {
+        for (int i = startRow; i <= endRow; i++) {
             out[i] = data[i][col];
         }
         return out;
     }
 
-    public String[] getCol(int col, int startRow) {
-        return Arrays.copyOfRange(getCol(col), startRow, getRowCount());
-    }
-
-    public String[] getCol(int col, int startRow, int endRow) {
-        return Arrays.copyOfRange(getCol(col), startRow, endRow);
-    }
-
     public String[] getColWith(String searchValue) {
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[i].length; j++) {
-                if (searchValue.equals(data[i][j]))
+                if (data[i][j].trim().equals(searchValue))
                     return getCol(j);
             }
         }
-        Exit.errorMessage("Couldn't find ID", searchValue + " not found");
+        Commons.exitWithError("Couldn't find ID", searchValue + " not found");
         return null;
     }
 
@@ -65,22 +63,8 @@ public class Sheet {
                     return getRow(i);
             }
         }
-        Exit.errorMessage("Couldn't find ID", searchValue + " not found");
+        Commons.exitWithError("Couldn't find ID", searchValue + " not found");
         return null;
-    }
-
-    public String[][] getCells(int startRow, int startCol, int endRow, int endCol) {
-        int numberOfRows = endRow - startRow + 1;
-        int numberOfCols = endCol - startCol + 1;
-
-        String[][] subarray = new String[numberOfRows][numberOfCols];
-        for (int i = startRow; i <= endRow; i++) {
-            for (int j = startCol; j <= endCol; j++) {
-                subarray[i][j] = data[i][j];
-            }
-        }
-
-        return subarray;
     }
 
     public Sheet(String csv) {
@@ -88,7 +72,7 @@ public class Sheet {
         data = new String[temp.length][];
         for (int i = 0; i < temp.length; i++) {
             temp[i] = temp[i].substring(1, temp[i].length() - 1);
-            data[i] = temp[i].split("\",\"");
+            data[i] = temp[i].split("\",\"", -1);
         }
     }
 
