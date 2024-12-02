@@ -6,8 +6,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import com.lab.project.Exception.ApuException;
-
 public class Commons {
 
     public static boolean isValidCellRange(String range) {
@@ -19,14 +17,6 @@ public class Commons {
 
     public static boolean isValidCellNumber(String cellNumber) {
         return cellNumber.matches("^([A-Z]{1,2}|[A-W][A-Z]{2}|X[A-E][A-Z]|XF[A-D])([1-9]\\d{0,6})$");
-    }
-
-    public static String getDocsKey(String fullLink) throws ApuException {
-        try {
-            return fullLink.split("spreadsheets/d/")[1].split("/")[0];
-        } catch (Exception e) {
-            throw new ApuException("link error");
-        }
     }
 
     public static String[] getExtraInfoArray(String extraInfoString) {
@@ -105,7 +95,7 @@ public class Commons {
     public static <T> String stringFrom2DArray(T[][] array, String joiner, String joiner2D) {
         String s = "";
         for (int i = 0; i < array.length; i++) {
-            s = stringFromArray(array[i], joiner);
+            s += stringFromArray(array[i], joiner);
             if (i != array.length - 1)
                 s += joiner2D;
         }

@@ -1,16 +1,23 @@
 package com.lab.project;
 
+import java.awt.event.ItemEvent;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.lab.project.TemplateComponent.DropDownMenu;
+import com.lab.project.TemplateComponent.Exit;
 import com.lab.project.TemplateComponent.TextDisplay;
 
 public class Main {
-    
-    public final static String SPREAD_SHEET_MANAGER_DOCS_KEY = "1YhTCkhKhV7oWxZz7ZgwaJI5fOU3md_m8PJKZCfey-r4";
+
+    public final static String MAIN_SHEET_DOCS_KEY = "1YhTCkhKhV7oWxZz7ZgwaJI5fOU3md_m8PJKZCfey-r4";
     public final static int SECTION_NAME_COL = 2;
+    public final static int FEILD_NAME_COL = 3;
+    public final static int STUDENT_INFO_COL = 4;
+    public final static int EXTRA_INFO_COL = 5;
     /*
      * Sequence:
      * choosing sht
@@ -18,7 +25,8 @@ public class Main {
      * Bunch of JTables
      * error log (w scroll wheel)
      */
-
+    public static Sheet fields;
+    public static Sheet studentData;
     private static String errorMessage = "";
 
     private static Sheet mainSheet;
@@ -38,36 +46,68 @@ public class Main {
     private static TextDisplay mainData;
 
     public static void _GUI() {
+
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(800, 600);
-        typeSelect = new DropDownMenu("Theory", "Lab");
+        String[] options= {"Theory", "Lab"};
+        typeSelect = new DropDownMenu(options);
         sectionSelect = new DropDownMenu();
         mainData = new TextDisplay();
         sectionSelect.setVisible(false);
         mainData.setVisible(false);
         typeSelect.setLocation(10, 10);
         sectionSelect.setLocation(10, 70);
-        typeSelect.addItemListener(e -> onTypeSelect());
-        sectionSelect.addItemListener(e -> onSectionSelect());
+        typeSelect.addItemListener(e -> onTypeSelect(e));
+        sectionSelect.addItemListener(e -> onSectionSelect(e));
         frame.add(typeSelect);
         frame.add(sectionSelect);
         frame.setVisible(true);
+        // Exit.errorMessage("abc", "def");
     }
 
-    public static void onTypeSelect() {
-        sectionSelect.setVisible(false);
-        mainData.setVisible(false);
-        mainSheet = new Sheet(DownloadManager.downloadFromURL(SPREAD_SHEET_MANAGER_DOCS_KEY,typeSelect.getSelected()));
-        sectionSelect.removeAllItems();
-        // sectionSelect.addItems(Selected.getSections());
-        sectionSelect.setVisible(true);
+    public static void onTypeSelect(ItemEvent e) {
+        if (e.getSource().equals(typeSelect)) {
+            sectionSelect.setVisible(false);
+            mainData.setVisible(false);
+            String down = DownloadManager.downloadFromURL(MAIN_SHEET_DOCS_KEY, typeSelect.getSelected());
+            System.out.println(down);
+            mainSheet = new Sheet(down);
+
+            mainSheet.print();
+            System.out.println(mainSheet.getCell(1, 2));
+            sectionSelect.removeAllItems();
+            sectionSelect.addItems(mainSheet.getCol(SECTION_NAME_COL, 1));
+            sectionSelect.setVisible(true);
+        }
     }
 
-    public static void onSectionSelect() {
-        mainData.setVisible(false);
-        // Selected.sectionChosen(sectionSelect.getSelectedIndex());
+    public static void onSectionSelect(ItemEvent e) {
+
+        if (e.getSource().equals(sectionSelect)) {
+            mainData.setVisible(false);
+            // Selected.sectionChosen(sectionSelect.getSelectedIndex());
+            System.out.println("here but not supposed to");
+            int chosenCol = sectionSelect.getSelectedIndex() + 1;
+            String down;
+            String docsKey = DownloadManager.getDocsKey(mainSheet.getCell(0, 1));
+            down = DownloadManager.downloadFromURL(docsKey, sectionSelect.getSelected(),
+                    mainSheet.getCell(chosenCol, FEILD_NAME_COL));
+            fields = new Sheet(down);
+            down = DownloadManager.downloadFromURL(docsKey, sectionSelect.getSelected(),
+                    mainSheet.getCell(chosenCol, STUDENT_INFO_COL));
+            studentData = new Sheet(down);
+
+            studentData.print();
+            fields.print();
+            String id = JOptionPane.showInputDialog("ID: ");
+            String[] feildData = fields.getRow(0);
+            String[] currentData = studentData.getRowWith(id);
+            for (int i = 0; i < currentData.length; i++) {
+                System.out.println(feildData[i] + ": " + currentData[i]);
+            }
+        }
     }
 
     public static void check(String s) {

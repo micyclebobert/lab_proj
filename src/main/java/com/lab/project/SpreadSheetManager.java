@@ -43,7 +43,7 @@ public class SpreadSheetManager {
         System.out.println(2);
         group = new Group[downloaded.length - 1];
         System.out.println(3);
-        docsKey = Commons.getDocsKey(downloaded[0][1]);
+        docsKey = DownloadManager.getDocsKey(downloaded[0][1]);
         System.out.println(4);
         for (int i = 0; i < group.length; i++) {
             System.out.println("i: "+i);

@@ -6,8 +6,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import javax.swing.JOptionPane;
-
+import com.lab.project.Exception.ApuException;
 import com.lab.project.TemplateComponent.Exit;
 
 public class DownloadManager {
@@ -18,18 +17,19 @@ public class DownloadManager {
     }
 
     public static String getFullURL(String docsKeys, String sheetName, String range) {
-        return "https://docs.google.com/spreadsheets/d/" + docsKeys
-                + "/gviz/tq?tqx=out:csv&sheet=" + URLEncoder.encode(sheetName, StandardCharsets.UTF_8)
-                + "&range=" + range;
+        System.out.println("4");
+        return getFullURL(docsKeys, sheetName) + "&range=" + range;
     }
 
     public static String downloadFromURL(String requestURL) {
-        try (Scanner scanner = new Scanner(new URL(requestURL).openStream(),
-                StandardCharsets.UTF_8.toString())) {
+        System.out.println(requestURL);
+        try {
+            Scanner scanner = new Scanner(new URL(requestURL).openStream(), StandardCharsets.UTF_8.toString());
             scanner.useDelimiter("\\A");
-            return scanner.hasNext() ? scanner.next() : "";
-        }
-        catch(IOException e){
+            String out = scanner.hasNext() ? scanner.next() : "";
+            scanner.close();
+            return out;
+        } catch (IOException e) {
             Exit.errorMessage("Download Failure", "Could not download data");
             return null;
         }
@@ -42,5 +42,14 @@ public class DownloadManager {
 
     public static String downloadFromURL(String docsKeys, String sheetName, String range) {
         return downloadFromURL(getFullURL(docsKeys, sheetName, range));
+    }
+
+    public static String getDocsKey(String fullLink) {
+        try {
+            return fullLink.split("spreadsheets/d/")[1].split("/")[0];
+        } catch (Exception e) {
+            Exit.errorMessage("Couldn't split", "fullLink");
+            return null;
+        }
     }
 }

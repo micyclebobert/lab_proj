@@ -1,92 +1,112 @@
 package com.lab.project;
 
+import java.util.Arrays;
+
 import com.lab.project.TemplateComponent.Exit;
 
 public class Sheet {
     String[][] data;
 
+    public int getRowCount() {
+        return data.length;
+    }
+
+    public int getColCount() {
+        return data[0].length;
+    }
+
     public String getCell(int row, int col) {
         return data[row][col];
     }
-    public String[] getRow(String[][] array, int startRow) {
-        if (array == null || startRow < 0 || startRow >= array.length) {
-            throw new IllegalArgumentException("Invalid row index or array is null.");
-        }
-        return array[startRow];
+
+    public String[] getRow(int row) {
+        return data[row];
     }
-    public String[] getSubRow(String[][] array, int row, int startCol) {
-        if (array == null || row < 0 || row >= array.length || startCol < 0 || startCol >= array[row].length) {
-            throw new IllegalArgumentException("Invalid row/column index or array is null.");
-        }
-    
-        int length = array[row].length - startCol;
-        String[] subRow = new String[length];
-    
-        for (int i = 0; i < length; i++) {
-            subRow[i] = array[row][startCol + i];
-        }
-    
-        return subRow;
+
+    public String[] getRow(int row, int startCol) {
+        return Arrays.copyOfRange(getRow(row), startCol, getColCount());
     }
-    public String[] getCol(String[][] array, int col) {
-        if (array == null || col < 0 || col >= array[0].length) {
-            throw new IllegalArgumentException("Invalid column index or array is null.");
-        }
-    
-        String[] column = new String[array.length];
-        for (int i = 0; i < array.length; i++) {
-            column[i] = array[i][col];
-        }
-    
-        return column;
+
+    public String[] getRow(int row, int startCol, int endCol) {
+        return Arrays.copyOfRange(getRow(row), startCol, endCol);
     }
-    
-    public String[] getSubCol(String[][] array, int col, int startRow) {
-        if (array == null || col < 0 || col >= array[0].length || startRow < 0 || startRow >= array.length) {
-            throw new IllegalArgumentException("Invalid row/column index or array is null.");
+
+    public String[] getCol(int col) {
+        String[] out = new String[getRowCount()];
+        for (int i = 0; i < out.length; i++) {
+            out[i] = data[i][col];
         }
-    
-        int length = array.length - startRow;
-        String[] subCol = new String[length];
-    
-        for (int i = 0; i < length; i++) {
-            subCol[i] = array[startRow + i][col];
-        }
-    
-        return subCol;
+        return out;
     }
-        
-    
+
+    public String[] getCol(int col, int startRow) {
+        return Arrays.copyOfRange(getCol(col), startRow, getRowCount());
+    }
+
+    public String[] getCol(int col, int startRow, int endRow) {
+        return Arrays.copyOfRange(getCol(col), startRow, endRow);
+    }
+
+    public String[] getColWith(String searchValue) {
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                if (searchValue.equals(data[i][j]))
+                    return getCol(j);
+            }
+        }
+        Exit.errorMessage("Couldn't find ID", searchValue + " not found");
+        return null;
+    }
+
+    public String[] getRowWith(String searchValue) {
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                if ("2412826042".trim().equals(searchValue.trim()))
+                    return getRow(i);
+            }
+        }
+        Exit.errorMessage("Couldn't find ID", searchValue + " not found");
+        return null;
+    }
 
     public String[][] getCells(int startRow, int startCol, int endRow, int endCol) {
-        // Validation
-        if (data == null || startRow < 0 || startCol < 0 || endRow >= data.length || endCol >= data[0].length
-                || startRow > endRow || startCol > endCol) {
-            Exit.errorMessage("Programmer has skill issue", "Invalid range or array is null.");
-        }
+        int numberOfRows = endRow - startRow + 1;
+        int numberOfCols = endCol - startCol + 1;
 
-        // Size of the subarray
-        int rowsLen = endRow - startRow + 1;
-        int colsLen = endCol - startCol + 1;
-
-        String[][] subarray = new String[rowsLen][colsLen];
-        for (int i = 0; i < rowsLen; i++) {
-            for (int j = 0; j < colsLen; j++) {
-                subarray[i][j] = data[startRow + i][startCol + j];
+        String[][] subarray = new String[numberOfRows][numberOfCols];
+        for (int i = startRow; i <= endRow; i++) {
+            for (int j = startCol; j <= endCol; j++) {
+                subarray[i][j] = data[i][j];
             }
         }
 
         return subarray;
     }
 
-
-
-    public Sheet(String tsv) {
-        String[] temp = tsv.split("\n");
+    public Sheet(String csv) {
+        String[] temp = csv.split("\n");
         data = new String[temp.length][];
         for (int i = 0; i < temp.length; i++) {
-            data[i] = temp[i].split("\t");
+            data[i] = temp[i].split("\",\"");
+            if (Commons.hasContent(data[i][0]))
+                data[i][0].substring(1);
+            int last = data[i].length - 1;
+            if (Commons.hasContent(data[i][last]))
+                data[i][last].substring(0, data[i][last].length() - 1);
+            // studentData[i][last] = studentData[i][last].substring(0,
+            // studentData[i][last].length() - 1);
+
         }
+    }
+
+    public String toString() {
+        return Commons.stringFrom2DArray(data);
+    }
+
+    public void print() {
+        System.out.println("wat");
+        System.out.println(this.toString());
+        System.out.println("wat");
     }
 
 }
