@@ -64,11 +64,10 @@ public class Main {
         frame.add(typeSelect);
         frame.add(sectionSelect);
         frame.setVisible(true);
-        // Exit.errorMessage("abc", "def");
     }
 
     public static void onTypeSelect(ItemEvent e) {
-        if (e.getSource().equals(typeSelect)) {
+        if (typeSelect.isVisible()) {
             sectionSelect.setVisible(false);
             mainData.setVisible(false);
             String down = DownloadManager.downloadFromURL(MAIN_SHEET_DOCS_KEY, typeSelect.getSelected());
@@ -85,10 +84,8 @@ public class Main {
 
     public static void onSectionSelect(ItemEvent e) {
 
-        if (e.getSource().equals(sectionSelect)) {
+        if (sectionSelect.isVisible()) {
             mainData.setVisible(false);
-            // Selected.sectionChosen(sectionSelect.getSelectedIndex());
-            System.out.println("here but not supposed to");
             int chosenCol = sectionSelect.getSelectedIndex() + 1;
             String down;
             String docsKey = DownloadManager.getDocsKey(mainSheet.getCell(0, 1));
