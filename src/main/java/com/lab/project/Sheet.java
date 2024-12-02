@@ -1,7 +1,5 @@
 package com.lab.project;
 
-import java.util.Arrays;
-
 public class Sheet {
     String[][] data;
 
@@ -21,39 +19,12 @@ public class Sheet {
         return data[row];
     }
 
-    public String[] getRow(int row, int startCol) {
-        return Arrays.copyOfRange(getRow(row), startCol, getColCount());
-    }
-
-    public String[] getRow(int row, int startCol, int endCol) {
-        return Arrays.copyOfRange(getRow(row), startCol, endCol);
-    }
-
-    public String[] getCol(int col) {
-        return getCol(col, 0);
-    }
-
     public String[] getCol(int col, int startRow) {
-        return getCol(col, startRow, getRowCount() - 1);
-    }
-
-    public String[] getCol(int col, int startRow, int endRow) {
-        String[] out = new String[getRowCount()];
-        for (int i = startRow; i <= endRow; i++) {
+        String[] out = new String[getRowCount() - startRow];
+        for (int i = startRow; i < out.length; i++) {
             out[i] = data[i][col];
         }
         return out;
-    }
-
-    public String[] getColWith(String searchValue) {
-        for (int i = 0; i < data.length; i++) {
-            for (int j = 0; j < data[i].length; j++) {
-                if (data[i][j].trim().equals(searchValue))
-                    return getCol(j);
-            }
-        }
-        Commons.exitWithError("Couldn't find ID", searchValue + " not found");
-        return null;
     }
 
     public String[] getRowWith(String searchValue) {
@@ -63,7 +34,8 @@ public class Sheet {
                     return getRow(i);
             }
         }
-        Commons.exitWithError("Couldn't find ID", searchValue + " not found");
+        getRowWith(Custom.getIDFromUser(searchValue
+                + " was not found. Please try again or if you believe it to be a mistake, contact Sir or Apu."));
         return null;
     }
 
@@ -75,13 +47,4 @@ public class Sheet {
             data[i] = temp[i].split("\",\"", -1);
         }
     }
-
-    public String toString() {
-        return Commons.stringFrom2DArray(data);
-    }
-
-    public void print() {
-        System.out.println(this.toString());
-    }
-
 }

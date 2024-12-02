@@ -26,12 +26,12 @@ public class DownloadManager {
             if (scanner.hasNext())
                 out = scanner.next();
             else
-                Commons.exitWithError("Download Failure (1)", "Data is empty");
+                Custom.exitWithError("No data", "Downloaded string is blank.");
             scanner.close();
             return out;
         } catch (IOException e) {
             e.printStackTrace();
-            Commons.exitWithError("Download Failure (2)", "Could not download data");
+            Custom.exitWithError("Download Failure", "Could not download data.");
             return null;
         }
     }
@@ -49,7 +49,7 @@ public class DownloadManager {
             return fullLink.split("spreadsheets/d/")[1].split("/")[0];
         } catch (Exception e) {
             e.printStackTrace();
-            Commons.exitWithError("Couldn't split", "fullLink");
+            Custom.exitWithError("Key Extraction Failure", "Could not separate key. Contact Sir or Apu to edit the spreadsheet.");
             return null;
         }
     }

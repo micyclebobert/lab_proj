@@ -11,7 +11,6 @@ public class Main {
     public final static int SECTION_NAME_COL = 2;
     public final static int FIELDS_RANGE_COL = 3;
     public final static int STUDENT_INFORMATION_RANGE_COL = 4;
-    // public final static int EXTRA_INFORMATION_COL = 5;
 
     private static Sheet mainSheet;
 
@@ -40,7 +39,7 @@ public class Main {
         typeSelect.setLocation(150, 10);
         sectionLabel.setLocation(20, 70);
         sectionSelect.setLocation(150, 70);
-        textDisplay.setLocation(50,140);
+        textDisplay.setLocation(50, 140);
         typeSelect.addItemListener(e -> onTypeSelect());
         sectionSelect.addItemListener(e -> onSectionSelect());
         frame.add(typeLabel);
@@ -48,7 +47,6 @@ public class Main {
         frame.add(sectionLabel);
         frame.add(sectionSelect);
         frame.add(textDisplay);
-        // tst();
         frame.setVisible(true);
     }
 
@@ -74,38 +72,23 @@ public class Main {
             String docsKey = DownloadManager.getDocsKey(mainSheet.getCell(0, 1));
             String fieldsDownload = DownloadManager.downloadFromURL(docsKey, sectionSelect.getSelected(),
                     mainSheet.getCell(chosenCol, FIELDS_RANGE_COL));
-            String[] feildNames = new Sheet(fieldsDownload).getRow(0);
+            String[] fieldNames = new Sheet(fieldsDownload).getRow(0);
             String studentDownload = DownloadManager.downloadFromURL(docsKey, sectionSelect.getSelected(),
                     mainSheet.getCell(chosenCol, STUDENT_INFORMATION_RANGE_COL));
-            String id = JOptionPane.showInputDialog("ID: ").trim();
+            String id = Custom.getIDFromUser("Enter your ID");
             String[] currentStudentData = new Sheet(studentDownload).getRowWith(id);
             String out = "";
-            for (int i = 0; i < feildNames.length; i++) {
-                out += feildNames[i] + ": " + currentStudentData[i] + "\n";
+            for (int i = 0; i < fieldNames.length; i++) {
+                out += fieldNames[i] + ": " + currentStudentData[i] + "\n";
             }
             showText(out);
         }
     }
 
-    // public static void tst() {
-    //     showText("Student ID: 2412826042\n" + //
-    //             "Name: Aoutul Nabi Purna\n" + //
-    //             "Project group no.: 1\n" + //
-    //             "by RFID punch: from RDS\n" + //
-    //             "Quiz 1: 14.5\n" + //
-    //             "Quiz 2: 14.5\n" + //
-    //             "Quiz - best 1: 14.5\n" + //
-    //             "extra (5%): 5\n" + //
-    //             ": 19\n" + //
-    //             ": 25\n" + //
-    //             ": 21\n" + //
-    //             ":");
-    // }
-
     public static void showText(String text) {
         textDisplay.setText(text);
         textDisplay.setVisible(true);
-        textDisplay.setSize(WIDTH,200); //updates preferredSize
+        textDisplay.setSize(WIDTH, 200); // updates preferredSize
         textDisplay.setSize(textDisplay.getPreferredSize());
     }
 

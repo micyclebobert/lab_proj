@@ -10,6 +10,5 @@ public class TLabel extends JLabel {
         this.setFont(new Font(Font.DIALOG, Font.BOLD, 15));
         this.setSize(this.getPreferredSize());
         this.setSize(this.getWidth() + 10, this.getHeight());// a lil bit more than required
-        System.out.println(this.getFont());
     }
 }
