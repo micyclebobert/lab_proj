@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
+import com.lab.project.Exception.ApuException;
+
 public class Commons {
 
     public static boolean isValidCellRange(String range) {
@@ -81,33 +83,6 @@ public class Commons {
         return studentData;
     }
 
-    public static String getFullURL(String docsKeys, String sheetName) {
-        return "https://docs.google.com/spreadsheets/d/" + docsKeys
-                + "/gviz/tq?tqx=out:csv&sheet=" + URLEncoder.encode(sheetName, StandardCharsets.UTF_8);
-    }
-
-    public static String getFullURL(String docsKeys, String sheetName, String range) {
-        return "https://docs.google.com/spreadsheets/d/" + docsKeys
-                + "/gviz/tq?tqx=out:csv&sheet=" + URLEncoder.encode(sheetName, StandardCharsets.UTF_8)
-                + "&range=" + range;
-    }
-
-    public static String readStringFromURL(String requestURL) throws IOException {
-        try (Scanner scanner = new Scanner(new URL(requestURL).openStream(),
-                StandardCharsets.UTF_8.toString())) {
-            scanner.useDelimiter("\\A");
-            return scanner.hasNext() ? scanner.next() : "";
-        }
-    }
-
-    public static String readStringFromURL(String docsKeys, String sheetName) throws IOException {
-        System.out.println(getFullURL(docsKeys, sheetName));
-        return readStringFromURL(getFullURL(docsKeys, sheetName));
-    }
-
-    public static String readStringFromURL(String docsKeys, String sheetName, String range) throws IOException {
-        return readStringFromURL(getFullURL(docsKeys, sheetName, range));
-    }
 
     public static <T> String stringFromArray(T[] array) {
         return stringFromArray(array, ", ");

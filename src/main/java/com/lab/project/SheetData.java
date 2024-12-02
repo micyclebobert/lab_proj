@@ -2,6 +2,10 @@ package com.lab.project;
 
 import java.io.IOException;
 
+import com.lab.project.Exception.ApuException;
+import com.lab.project.Exception.DownloadException;
+import com.lab.project.Exception.NoSuchStudentException;
+
 public class SheetData {
     Group selectedGroup;
     private String docsKey;
@@ -31,12 +35,13 @@ public class SheetData {
         this.docsKey = docsKey;
         this.selectedGroup = selectedGroup;
         getData(selectedGroup.getFieldNameRange());
+        System.out.println("Sub-sheet downloaded");
     }
 
     public String getData(String range) throws DownloadException {
         try {
-            return Commons.readStringFromURL(docsKey, selectedGroup.getSection(), range);
-        } catch (IOException e) {
+            return DownloadManager.downloadFromURL(docsKey, selectedGroup.getSection(), range);
+        } catch (Exception e) {
             throw new DownloadException("Sub-sheet download failed");
         }
     }

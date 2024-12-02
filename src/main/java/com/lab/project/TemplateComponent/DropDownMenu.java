@@ -1,4 +1,4 @@
-package com.lab.project;
+package com.lab.project.TemplateComponent;
 
 import java.awt.Dimension;
 import javax.swing.JComboBox;
@@ -14,5 +14,9 @@ public class DropDownMenu extends JComboBox<String> {
         for (String string : args) {
             this.addItem(string);
         }
+    }
+
+    public String getSelected() {
+        return (String) this.getSelectedItem();
     }
 }

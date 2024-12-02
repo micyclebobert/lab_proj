@@ -1,5 +1,8 @@
 package com.lab.project;
 
+import com.lab.project.Exception.ApuException;
+import com.lab.project.Exception.DownloadException;
+
 public class SpreadSheetManager {
     public final String type;
     public final static String SPREAD_SHEET_MANAGER_DOCS_KEY = "1YhTCkhKhV7oWxZz7ZgwaJI5fOU3md_m8PJKZCfey-r4";
@@ -31,27 +34,19 @@ public class SpreadSheetManager {
 
     public void update() throws DownloadException, ApuException {
         String s = "";
-        // try {
-        // s = Commons.readStringFromURL(SPREAD_SHEET_MANAGER_DOCS_KEY, type);
-        // } catch (IOException e) {
-        // throw new DownloadException("Main Sheet download failed");
-        // }
-        s = "\"Link:\",\"https://docs.google.com/spreadsheets/d/139M28-ssoApBQxjlaATXXlTNZiB01m3Ct-9nv3yZYWQ/edit?gid=1767563786#gid=1767563786\",\"Sheet Name\",\"Fields Range\",\"Student Information Range\",\"Extra Information Range\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n"
-                + //
-                "\"\",\"\",\"CSE 115 Sec 7\",\"A3:L3\",\"A4:L42\",\"A\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n"
-                + //
-                "\"\",\"\",\"CSE 215 Sec 7\",\"A3:L3\",\"A4:L41\",\"A\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n"
-                + //
-                "\"\",\"\",\"CSE 215 Sec 8\",\"A3:L3\",\"A4:L41\",\"A\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n"
-                + //
-                "\"\",\"\",\"CSE 440 Sec 1\",\"A3:L3\",\"A4:L44\",\"A\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n"
-                + //
-                "\"\",\"\",\"CSE 445 Sec 6\",\"A3:L3\",\"A4:L46\",\"A,B\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"";
-        System.out.println(s);
+        try {
+            s = DownloadManager.downloadFromURL(SPREAD_SHEET_MANAGER_DOCS_KEY, type);
+        } catch (Exception e) {
+            throw new DownloadException("Main Sheet download failed");
+        }
         String[][] downloaded = Commons.splitCells(s);
+        System.out.println(2);
         group = new Group[downloaded.length - 1];
+        System.out.println(3);
         docsKey = Commons.getDocsKey(downloaded[0][1]);
+        System.out.println(4);
         for (int i = 0; i < group.length; i++) {
+            System.out.println("i: "+i);
             group[i] = new Group(
                     downloaded[i + 1][2],
                     downloaded[i + 1][3],

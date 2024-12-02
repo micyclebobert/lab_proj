@@ -1,4 +1,4 @@
-package com.lab.project;
+package com.lab.project.TemplateComponent;
 
 import javax.swing.JTextArea;
 

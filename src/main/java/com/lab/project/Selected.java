@@ -1,5 +1,8 @@
 package com.lab.project;
 
+import com.lab.project.Exception.ApuException;
+import com.lab.project.Exception.DownloadException;
+
 public class Selected {
     private static SpreadSheetManager manager;
     private static Group group;
@@ -30,8 +33,10 @@ public class Selected {
         try {
             manager = new SpreadSheetManager(type);
         } catch (DownloadException e) {
+            
             Main.setErrorMessage("Download Error: " + e.getMessage());
         } catch (ApuException e) {
+            System.out.println("hr");
             Main.setErrorMessage("Apu Error: " + e.getMessage());
         }
     }
