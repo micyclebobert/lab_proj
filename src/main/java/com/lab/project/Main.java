@@ -123,17 +123,6 @@ public class Main {
         System.out.println(e);
     }
 
-    static void f3() {
-        SpreadSheetManager sm = null;
-        try {
-            sm = new SpreadSheetManager("Theory");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("abc");
-        }
-        sm.print();
-    }
-
     static void f2() throws Exception {
         String s1 = DownloadManager.downloadFromURL("139M28-ssoApBQxjlaATXXlTNZiB01m3Ct-9nv3yZYWQ", "CSE 445 Sec 6",
                 "B4:I6");

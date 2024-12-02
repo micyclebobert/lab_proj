@@ -6,7 +6,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import com.lab.project.Exception.ApuException;
 import com.lab.project.TemplateComponent.Exit;
 
 public class DownloadManager {
