@@ -8,6 +8,16 @@ import java.util.Scanner;
 
 public class DownloadManager {
 
+    public static String getDocsKey(String fullLink) {
+        try {
+            return fullLink.split("spreadsheets/d/")[1].split("/")[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+            Custom.exitWithError("Key Extraction Failure", "Could not separate key. Contact Sir or Apu to edit the spreadsheet.");
+            return null;
+        }
+    }
+
     public static String getFullURL(String docsKeys, String sheetName) {
         return "https://docs.google.com/spreadsheets/d/" + docsKeys
                 + "/gviz/tq?tqx=out:csv&sheet=" + URLEncoder.encode(sheetName, StandardCharsets.UTF_8);
@@ -41,15 +51,5 @@ public class DownloadManager {
 
     public static String downloadFromURL(String docsKeys, String sheetName, String range) {
         return downloadFromURL(getFullURL(docsKeys, sheetName, range));
-    }
-
-    public static String getDocsKey(String fullLink) {
-        try {
-            return fullLink.split("spreadsheets/d/")[1].split("/")[0];
-        } catch (Exception e) {
-            e.printStackTrace();
-            Custom.exitWithError("Key Extraction Failure", "Could not separate key. Contact Sir or Apu to edit the spreadsheet.");
-            return null;
-        }
     }
 }
