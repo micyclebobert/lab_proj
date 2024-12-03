@@ -19,6 +19,14 @@ public class Sheet {
         return data[row];
     }
 
+    public String[] getCol(int col) {
+        String[] out = new String[getRowCount()];
+        for (int i = 0; i < out.length; i++) {
+            out[i] = data[i][col];
+        }
+        return out;
+    }
+
     public String[] getCol(int col, int startRow) {
         String[] out = new String[getRowCount() - startRow];
         for (int i = startRow; i < out.length; i++) {

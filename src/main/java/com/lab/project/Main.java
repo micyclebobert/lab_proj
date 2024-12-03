@@ -67,13 +67,13 @@ public class Main {
     public static void onSectionSelect() {
         if (sectionSelect.isVisible()) {
             textDisplay.setVisible(false);
-            int chosenCol = sectionSelect.getSelectedIndex() + 1;
+            int chosenRow = sectionSelect.getSelectedIndex() + 1;
             String docsKey = DownloadManager.getDocsKey(mainSheet.getCell(0, 1));
             String fieldsDownload = DownloadManager.downloadFromURL(docsKey, sectionSelect.getSelected(),
-                    mainSheet.getCell(chosenCol, FIELDS_RANGE_COL));
+                    mainSheet.getCell(chosenRow, FIELDS_RANGE_COL));
             String[] fieldNames = new Sheet(fieldsDownload).getRow(0);
             String studentDownload = DownloadManager.downloadFromURL(docsKey, sectionSelect.getSelected(),
-                    mainSheet.getCell(chosenCol, STUDENT_INFORMATION_RANGE_COL));
+                    mainSheet.getCell(chosenRow, STUDENT_INFORMATION_RANGE_COL));
             String id = Custom.getIDFromUser("Enter your ID");
             String[] currentStudentData = new Sheet(studentDownload).getRowWith(id);
             String out = "";
