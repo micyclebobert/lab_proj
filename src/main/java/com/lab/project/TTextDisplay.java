@@ -13,9 +13,4 @@ public class TTextDisplay extends JTextArea {
         this.setEditable(false);
         this.setFont(new Font(Font.SERIF,Font.BOLD,14));
     }
-
-    public TTextDisplay(String textToDisplay) {
-        this();
-        this.setText(textToDisplay);
-    }
 }
